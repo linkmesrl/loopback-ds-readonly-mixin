@@ -9,7 +9,7 @@ function readonly(Model, options) {
 
   // Make sure emailVerified is not set by creation
   Model.stripReadOnlyProperties = function(ctx, modelInstance, next) {
-    var body = ctx.req.body;
+    var body = ctx.req.args.data;
     if (!body) {
       return next();
     }
@@ -18,7 +18,7 @@ function readonly(Model, options) {
       debug('Creating %s : Readonly properties are %j', 'modelInstance.Model.modelName', properties);
       Object.keys(properties).forEach(function(key) {
         debug('The \'%s\' property is readonly, removing incoming data', key);
-        delete body[key];
+        body[key] = null;
       });
       next();
     } else {
